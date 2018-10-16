@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.hg.dao.UserMapper">
+	  <resultMap type="com.hg.pojo.UserPojo1" id="UserPojo1">
+			<id column="id" property="id"/>
+			<result column="username" property="Uusername"/>
+			<result column="psw" property="Upsw"/>
+	 </resultMap>
+  	<select id="selectById"  resultType="com.hg.pojo.UserPojo">
+  		select * from user_test <where>id=#{id}</where>
+  	</select>
+  	
+  	<select id="selectById2"  resultType="com.hg.pojo.UserPojo">
+  		select * from user_test <where>id=#{id} and psw=#{psw}</where>
+  	</select>
+  	
+  	<select id="selectAll" resultType="com.hg.pojo.UserPojo">
+  		select * from user_test
+  	</select>
+  	<select id="selectAll1" resultType="com.hg.pojo.UserPojo1">
+  		select 
+        id ,
+        username as Uusername,
+        psw as Upsw
+        from user_test
+  	</select>
+  	<select id="selectAll2" resultMap="UserPojo1">
+  		select * from user_test
+  	</select>
+  	<update id="updataUser" parameterType="com.hg.pojo.UserPojo" >
+  		update user_test 
+  	<set>
+      <if test="username != null">username=#{username},</if>
+      <if test="psw != null">psw=#{psw}</if>
+    </set>
+     where id=#{id}
+  	</update>
+  	<insert id="insertUserpojo" parameterType="com.hg.pojo.UserPojo">
+  		insert into user_test(username,psw) values
+  		<foreach collection="list" item="user" separator=",">
+  			(#{user.username}, #{user.psw})
+  		</foreach>
+  	</insert>
+  </mapper>
